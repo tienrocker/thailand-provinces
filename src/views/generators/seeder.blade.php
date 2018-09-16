@@ -1,5 +1,6 @@
 <?php echo '<?php' ?>
 
+
 use Tienrocker\ThProvinces\Provinces\Districts;
 use Tienrocker\ThProvinces\Provinces\Geographies;
 use Tienrocker\ThProvinces\Provinces\Provinces;
@@ -12,11 +13,12 @@ class ProvincesSeeder extends Seeder
     /**
      * Run the database seeds.
      *
-     * @return  void
+     * @return    void
      */
     public function run()
     {
 
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         if (Schema::hasTable(\Config::get('thprovinces.sub_districts_table')))
             DB::table(\Config::get('thprovinces.sub_districts_table'))->truncate();
         if (Schema::hasTable(\Config::get('thprovinces.districts_table')))
@@ -25,6 +27,7 @@ class ProvincesSeeder extends Seeder
             DB::table(\Config::get('thprovinces.provinces_table'))->truncate();
         if (Schema::hasTable(\Config::get('thprovinces.geographies_table')))
             DB::table(\Config::get('thprovinces.geographies_table'))->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         // Get all of the geographies
         $provinces = (new Geographies())->getList();
@@ -50,25 +53,35 @@ class ProvincesSeeder extends Seeder
         // Get all of the districts
         $provinces = (new Districts())->getList();
         foreach ($provinces as $province) {
-            DB::table(\Config::get('thprovinces.districts_table'))->insert([
-                'id' => $province['id'],
-                'code' => $province['code'],
-                'name_th' => $province['name_th'],
-                'name_en' => $province['name_en'],
-                'province_id' => $province['province_id']
-            ]);
+            try {
+                DB::table(\Config::get('thprovinces.districts_table'))->insert([
+                    'id' => $province['id'],
+                    'code' => $province['code'],
+                    'name_th' => $province['name_th'],
+                    'name_en' => $province['name_en'],
+                    'province_id' => $province['province_id']
+                ]);
+            } catch (\Exception $e) {
+                $this->command->info('Error data: ' . json_encode($province));
+                $this->command->error($e->getMessage());
+            }
         }
 
         // Get all of the provinces
         $provinces = (new SubDistricts())->getList();
         foreach ($provinces as $province) {
-            DB::table(\Config::get('thprovinces.sub_districts_table'))->insert([
-                'id' => $province['id'],
-                'zip_code' => $province['zip_code'],
-                'name_th' => $province['name_th'],
-                'name_en' => $province['name_en'],
-                'district_id' => $province['amphure_id']
-            ]);
+            try {
+                DB::table(\Config::get('thprovinces.sub_districts_table'))->insert([
+                    'id' => $province['id'],
+                    'zip_code' => $province['zip_code'],
+                    'name_th' => $province['name_th'],
+                    'name_en' => $province['name_en'],
+                    'district_id' => $province['amphure_id']
+                ]);
+            } catch (\Exception $e) {
+                $this->command->info('Error data: ' . json_encode($province));
+                $this->command->error($e->getMessage());
+            }
         }
     }
 }
