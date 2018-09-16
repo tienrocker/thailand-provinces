@@ -2,8 +2,8 @@
 
 namespace Tienrocker\ThProvinces;
 
-use tienrocker\ThProvinces\Provinces\Provinces;
-use tienrocker\ThProvinces\Commands\MigrationCommand;
+use Tienrocker\ThProvinces\Provinces\Provinces;
+use Tienrocker\ThProvinces\Commands\MigrationCommand;
 use Illuminate\Support\ServiceProvider;
 
 class ProvincesServiceProvider extends ServiceProvider
