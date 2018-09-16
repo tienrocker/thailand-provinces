@@ -1,0 +1,50 @@
+{
+    "name": "tienrocker/thailand-provinces",
+    "description": "Thailand provinces database as Laravel package",
+    "type": "laravel-package",
+    "keyword" : ["laravel", "thailand", "provinces", "database"],
+    "require": {
+        "illuminate/support": "5.x"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.0",
+        "phpspec/phpspec": "~2.1",
+        "laracasts/testdummy": "~2.0",
+        "laravel/laravel": "5.6.x"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tien Tran",
+            "email": "tienrocker@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Tienrocker\\ThProvinces\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        },
+        "classmap": [
+            "tests/DbTestCase.php",
+            "tests/ProvincesTest.php"
+        ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "3.0-dev"
+        },
+        "laravel": {
+            "providers": [
+                "Tienrocker\\ThProvinces\\ProvincesServiceProvider"
+            ],
+            "aliases": {
+                "ThProvinces": "Tienrocker\\ThProvinces\\Provinces\\Facades\\Provinces"
+            }
+        }
+    },
+    "minimum-stability": "stable"
+}
